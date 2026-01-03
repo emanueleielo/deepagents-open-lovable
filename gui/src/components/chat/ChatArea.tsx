@@ -152,7 +152,7 @@ export function ChatArea({
           className="absolute bottom-24 left-1/2 -translate-x-1/2 z-10 flex items-center gap-2 px-4 py-2 bg-accent-500 hover:bg-accent-400 text-luxury-900 rounded-full shadow-lg transition-all duration-200 animate-scale-in font-medium text-sm"
         >
           <Icon name="ChevronDown" size={14} />
-          <span>Nuovi messaggi</span>
+          <span>New messages</span>
         </button>
       )}
 
