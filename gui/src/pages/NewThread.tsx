@@ -1,5 +1,4 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Sidebar } from '../components/layout/Sidebar';
 import { ChatArea } from '../components/chat/ChatArea';
 import { RightPanel } from '../components/layout/RightPanel';
@@ -11,8 +10,6 @@ import { normalizeFiles, getMessageText } from '../types';
 import type { FileNode, Message } from '../types';
 
 export function NewThread(): JSX.Element {
-  const navigate = useNavigate();
-
   const {
     threads,
     isLoading: isLoadingThreads,
@@ -126,9 +123,7 @@ export function NewThread(): JSX.Element {
   }, [fileTree, selectedNode]);
 
   const handleNewThread = () => {
-    // Clear the threadId query param and navigate to /new
-    navigate('/new', { replace: true });
-    // Force page reload to reset the chat state
+    // Force page reload to reset the chat state completely
     window.location.href = '/new';
   };
 
