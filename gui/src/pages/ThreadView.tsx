@@ -8,7 +8,7 @@ import { useThreadHistory } from '../hooks/useThreadHistory';
 import { useFileChangeDetection } from '../hooks/useFileChangeDetection';
 import { useFileTree } from '../hooks/useFileTree';
 import { normalizeFiles, getMessageText } from '../types';
-import type { Message } from '../types';
+import type { FileNode, Message } from '../types';
 
 export function ThreadView(): JSX.Element {
   const { threadId: paramThreadId } = useParams<{ threadId: string }>();
@@ -110,7 +110,7 @@ export function ThreadView(): JSX.Element {
     setThreadId(selectedThreadId);
   };
 
-  const handleSelectNode = useCallback((node: import('../types').FileNode) => {
+  const handleSelectNode = useCallback((node: FileNode) => {
     // setSelectedNode from useFileTree already handles clearing auto-selection
     setSelectedNode(node);
   }, [setSelectedNode]);
