@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
-import { flatFilesToTree, getFilesHash, findNodeByPath, updateTreeContent } from '../utils/fileTree';
+import { flatFilesToTree, getFilesHash, findNodeByPath, pathToId, updateTreeContent } from '../utils/fileTree';
 import type { FileNode } from '../types';
 import type { FileChange } from './useFileChangeDetection';
 
@@ -115,7 +115,7 @@ export function useFileTree({
   // Calculate animation props
   const animatingFilePath = useMemo(() => {
     if (!autoSelectedPath || !isLoading) return null;
-    return autoSelectedPath.replace(/^\//, '').replace(/[^a-zA-Z0-9]/g, '_');
+    return pathToId(autoSelectedPath);
   }, [autoSelectedPath, isLoading]);
 
   const animatingPreviousContent = useMemo(() => {
