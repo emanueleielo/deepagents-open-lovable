@@ -3,7 +3,7 @@
  * Uses the Vite proxy at /vercel-api to handle CORS and authentication
  */
 
-import { prepareFilesForDeploy } from '../utils/vercelFiles';
+import { normalizeFilePath, prepareFilesForDeploy } from '../utils/vercelFiles';
 
 export interface VercelFile {
   file: string; // base64 encoded content
@@ -69,16 +69,7 @@ export function prepareFilesForVercel(
   const vercelFiles: Record<string, VercelFile> = {};
 
   for (const [path, content] of Object.entries(files)) {
-    // Remove /app/ prefix from agent paths
-    let normalizedPath = path;
-    if (normalizedPath.startsWith('/app/')) {
-      normalizedPath = normalizedPath.slice(4);
-    }
-    if (!normalizedPath.startsWith('/')) {
-      normalizedPath = '/' + normalizedPath;
-    }
-    // Remove leading slash for Vercel (they want relative paths)
-    normalizedPath = normalizedPath.slice(1);
+    const normalizedPath = normalizeFilePath(path);
 
     vercelFiles[normalizedPath] = {
       file: btoa(unescape(encodeURIComponent(content))),
