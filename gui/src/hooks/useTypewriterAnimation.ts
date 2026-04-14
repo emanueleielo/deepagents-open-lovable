@@ -59,32 +59,32 @@ export function useTypewriterAnimation(
     return Math.max(baseCharsPerFrame, dynamicCharsPerFrame);
   }, [baseCharsPerFrame, maxDurationMs, startFrom]);
 
+  const showFullContent = useCallback(() => {
+    setDisplayedContent(targetContent);
+    setIsAnimating(false);
+    setProgress(1);
+  }, [targetContent]);
+
   const skipToEnd = useCallback(() => {
     if (frameIdRef.current) {
       cancelAnimationFrame(frameIdRef.current);
       frameIdRef.current = null;
     }
-    setDisplayedContent(targetContent);
-    setIsAnimating(false);
-    setProgress(1);
+    showFullContent();
     currentIndexRef.current = targetContent.length;
-  }, [targetContent]);
+  }, [targetContent, showFullContent]);
 
   useEffect(() => {
     // If disabled or no content, show full content immediately
     if (!enabled || !targetContent) {
-      setDisplayedContent(targetContent);
-      setIsAnimating(false);
-      setProgress(1);
+      showFullContent();
       return;
     }
 
     // If starting from beginning with no new content, no animation needed
     const charsToAnimate = targetContent.length - startFrom;
     if (charsToAnimate <= 0) {
-      setDisplayedContent(targetContent);
-      setIsAnimating(false);
-      setProgress(1);
+      showFullContent();
       return;
     }
 
@@ -102,9 +102,7 @@ export function useTypewriterAnimation(
 
       if (currentIndexRef.current >= targetContent.length) {
         // Animation complete
-        setDisplayedContent(targetContent);
-        setIsAnimating(false);
-        setProgress(1);
+        showFullContent();
         frameIdRef.current = null;
         return;
       }
@@ -127,7 +125,7 @@ export function useTypewriterAnimation(
         frameIdRef.current = null;
       }
     };
-  }, [targetContent, enabled, startFrom, calculateCharsPerFrame]);
+  }, [targetContent, enabled, startFrom, calculateCharsPerFrame, showFullContent]);
 
   return {
     displayedContent,
