@@ -240,6 +240,10 @@ def _build_app_impl(runtime: ToolRuntime) -> dict[str, Any]:
 
         # Write files to temp directory
         for file_path, file_data in state_files.items():
+            # Skip non-app files (like /memory/)
+            if file_path.startswith("/memory/"):
+                continue
+
             # Convert file data to string content
             # State files have {"content": ["line1", "line2", ...], ...}
             if isinstance(file_data, dict) and "content" in file_data:
@@ -255,10 +259,6 @@ def _build_app_impl(runtime: ToolRuntime) -> dict[str, Any]:
                 clean_path = clean_path[5:]
             elif clean_path.startswith("/"):
                 clean_path = clean_path[1:]
-
-            # Skip non-app files (like /memory/)
-            if file_path.startswith("/memory/"):
-                continue
 
             # Create full path
             full_path = os.path.join(temp_dir, clean_path)
